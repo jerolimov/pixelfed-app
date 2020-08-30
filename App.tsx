@@ -15,8 +15,20 @@ const Stack = createStackNavigator<StackParamList>();
 export default function App() {
   const colorScheme = useColorScheme();
 
+  const theme = colorScheme === 'dark' ? {
+    ...DarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      primary: 'orange',
+      background: '#222222',
+      card: '#181818',
+      text: 'white',
+      border: '#555555',
+    },
+  } : DefaultTheme;
+
   return (
-    <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer theme={theme}>
       <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />

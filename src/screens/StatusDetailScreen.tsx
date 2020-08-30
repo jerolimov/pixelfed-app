@@ -9,10 +9,9 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import HTML, { HtmlAttributesDictionary } from "react-native-render-html";
 
 import { Status } from '../api';
-import { Container, Text } from '../components/ThemeComponents';
+import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
 import { StackParamList } from '../routes';
 
 type DetailsScreenProps = {
