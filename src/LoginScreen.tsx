@@ -11,6 +11,7 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { baseUrl } from './config';
 import { StackParamList } from './routes';
 
 type LoginScreenProps = {
@@ -18,17 +19,12 @@ type LoginScreenProps = {
 }
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
-  /*
   React.useEffect(() => {
-    // WebBrowser.maybeCompleteAuthSession();
     WebBrowser.warmUpAsync();
     return () => {
       WebBrowser.coolDownAsync();
     };
   }, []);
-  */
-
-  const baseUrl = 'https://pixelfed.social'
 
   const useProxy = true;
   const clientId = '8853';
@@ -51,8 +47,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   }
 
   const [request, result, promptAsync] = useAuthRequest(config, discovery);
-  const login3 = () => {
-    console.warn('Login3', redirectUri);
+  const login = () => {
+    console.warn('Login... with redirectUri =', redirectUri);
     promptAsync({ useProxy });
   }
   useEffect(() => {
@@ -72,7 +68,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Login3" onPress={login3} />
+      <Button title="Login3" onPress={login} />
 
       <Text>baseUrl = {baseUrl}</Text>
       <Text>clientId = {clientId}</Text>

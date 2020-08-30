@@ -1,3 +1,5 @@
+import { baseUrl, accessToken } from "./config";
+
 export type Visibility = 'public';
 export type Language = string;
 
@@ -74,9 +76,6 @@ export interface Status {
   account: Account;
   media_attachments: MediaAttachment[];
 }
-
-const baseUrl = 'https://pixelfed.social';
-const accessToken = '';
 
 export const getTimelineHome = async (): Promise<Status[]> => {
   const headers = {
