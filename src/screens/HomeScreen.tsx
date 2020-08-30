@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Image,
-  Text,
   TouchableOpacity,
   View,
   ScrollView,
@@ -13,7 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import HTML, { HtmlAttributesDictionary } from "react-native-render-html";
 
 import { StackParamList } from '../routes';
-
+import { Container, Text } from '../components/ThemeComponents';
 import { getTimelineHome, Status } from '../api';
 
 type HomeScreenProps = {
@@ -28,15 +27,17 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
   return (
     <ScrollView>
-      {/*
-      <Button
-        title="Login"
-        onPress={() => navigation.navigate('Login')}
-      />
-      */}
-      {
-        statuses?.map(status => <StatusItem key={status.id} status={status} navigation={navigation} />)
-      }
+      <Container>
+        {/*
+        <Button
+          title="Login"
+          onPress={() => navigation.navigate('Login')}
+        />
+        */}
+        {
+          statuses?.map(status => <StatusItem key={status.id} status={status} navigation={navigation} />)
+        }
+      </Container>
     </ScrollView>
   );
 }
@@ -74,7 +75,7 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
   const html = status.content.replace(/\/a>\s<a/g, '/a>&shy; <a');
 
   return (
-    <View style={{ backgroundColor: 'white', padding: 10, margin: 10 }}>
+    <View style={{ padding: 10, margin: 10 }}>
       <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
         <TouchableOpacity
           onPress={onProfilPressed}

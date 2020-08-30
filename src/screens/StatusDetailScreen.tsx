@@ -3,7 +3,6 @@ import {
   Image,
   ImageLoadEventData,
   ScrollView,
-  Text,
   TouchableOpacity,
   NativeSyntheticEvent,
   View,
@@ -13,6 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import HTML, { HtmlAttributesDictionary } from "react-native-render-html";
 
 import { Status } from '../api';
+import { Container, Text } from '../components/ThemeComponents';
 import { StackParamList } from '../routes';
 
 type DetailsScreenProps = {
@@ -53,47 +53,49 @@ export default function DetailsScreen({ navigation, route }: DetailsScreenProps)
   };
 
   return (
-    <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
-      <View style={{ flexDirection: 'row', padding: 10 }}>
-        <TouchableOpacity
-          onPress={onProfilPressed}
-          style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
-        >
-          <Image
-            source={{ uri: status.account.avatar_static }}
-            style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
-          />
-          <Text style={{ flex: 1 }}>
-            {userDisplayName}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>...</Text>
-        </TouchableOpacity>
-      </View>
-      <Image
-        source={{ uri: imageUrl }}
-        resizeMode="cover"
-        style={{ aspectRatio }}
-        onLoad={onImageLoaded}
-      />
-      <View style={{ padding: 10 }}>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity>
-            <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
-              {status.favourites_count} Favs
+    <ScrollView>
+      <Container>
+        <View style={{ flexDirection: 'row', padding: 10 }}>
+          <TouchableOpacity
+            onPress={onProfilPressed}
+            style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
+          >
+            <Image
+              source={{ uri: status.account.avatar_static }}
+              style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
+            />
+            <Text style={{ flex: 1 }}>
+              {userDisplayName}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
-              {status.reblogs_count} Reblogs
-            </Text>
+            <Text>...</Text>
           </TouchableOpacity>
         </View>
-        <HTML html={html} onLinkPress={onLinkPressed} />
-        <Text>Created {daysAgo} days ago</Text>
-        <Text>{status.replies_count} replies</Text>
-      </View>
+        <Image
+          source={{ uri: imageUrl }}
+          resizeMode="cover"
+          style={{ aspectRatio }}
+          onLoad={onImageLoaded}
+        />
+        <View style={{ padding: 10 }}>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity>
+              <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
+                {status.favourites_count} Favs
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
+                {status.reblogs_count} Reblogs
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <HTML html={html} onLinkPress={onLinkPressed} />
+          <Text>Created {daysAgo} days ago</Text>
+          <Text>{status.replies_count} replies</Text>
+        </View>
+      </Container>
     </ScrollView>
   );
 }

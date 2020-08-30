@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView } from 'react-native';
 import {
   useAuthRequest,
   makeRedirectUri,
@@ -13,6 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { baseUrl } from '../config';
 import { StackParamList } from '../routes';
+import { Container, Text } from '../components/ThemeComponents';
 
 type LoginScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Login'>,
@@ -67,12 +68,14 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   }, [result]);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Login3" onPress={login} />
+    <ScrollView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Container>
+        <Button title="Login" onPress={login} />
 
-      <Text>baseUrl = {baseUrl}</Text>
-      <Text>clientId = {clientId}</Text>
-      <Text>redirectUri = {redirectUri}</Text>
-    </View>
+        <Text>baseUrl = {baseUrl}</Text>
+        <Text>clientId = {clientId}</Text>
+        <Text>redirectUri = {redirectUri}</Text>
+      </Container>
+    </ScrollView>
   );
 }
