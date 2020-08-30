@@ -3,10 +3,10 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeScreen from './src/HomeScreen';
-import StatusDetailScreen from './src/StatusDetailScreen';
-import ProfilScreen from './src/ProfilScreen';
-import LoginScreen from './src/LoginScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import StatusDetailScreen from './src/screens/StatusDetailScreen';
+import ProfilScreen from './src/screens/ProfilScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import { StackParamList } from './src/routes';
 
 const Stack = createStackNavigator<StackParamList>();

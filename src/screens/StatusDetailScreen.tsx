@@ -12,8 +12,8 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import HTML, { HtmlAttributesDictionary } from "react-native-render-html";
 
-import { Status } from './api';
-import { StackParamList } from './routes';
+import { Status } from '../api';
+import { StackParamList } from '../routes';
 
 type DetailsScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'StatusDetail'>,

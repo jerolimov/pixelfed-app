@@ -12,9 +12,9 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import HTML, { HtmlAttributesDictionary } from "react-native-render-html";
 
-import { StackParamList } from './routes';
+import { StackParamList } from '../routes';
 
-import { getTimelineHome, Status } from './api';
+import { getTimelineHome, Status } from '../api';
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>,

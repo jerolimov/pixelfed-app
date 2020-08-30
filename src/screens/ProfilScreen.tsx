@@ -14,9 +14,9 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import HTML, { HtmlAttributesDictionary } from "react-native-render-html";
 
-import { StackParamList } from './routes';
+import { StackParamList } from '../routes';
 
-import { getAccount, getAccountStatuses, Account, Status } from './api';
+import { getAccount, getAccountStatuses, Account, Status } from '../api';
 
 type ProfilScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Profil'>,

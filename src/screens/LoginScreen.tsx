@@ -11,8 +11,8 @@ import * as WebBrowser from 'expo-web-browser';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { baseUrl } from './config';
-import { StackParamList } from './routes';
+import { baseUrl } from '../config';
+import { StackParamList } from '../routes';
 
 type LoginScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Login'>,
