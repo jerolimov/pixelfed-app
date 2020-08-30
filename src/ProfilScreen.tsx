@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import {
   Image,
   Text,
@@ -8,6 +8,8 @@ import {
   NativeSyntheticEvent,
   ImageLoadEventData,
   GestureResponderEvent,
+  Dimensions,
+  LayoutChangeEvent,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import HTML, { HtmlAttributesDictionary } from "react-native-render-html";
@@ -21,6 +23,7 @@ type ProfilScreenProps = {
 }
 
 export default function ProfilScreen({ navigation }: ProfilScreenProps) {
+  const [width, setWidth] = useState(Dimensions.get('window').width);
   const [account, setAccount] = useState<Account>();
   const [statuses, setStatuses] = useState<Status[]>();
   useEffect(() => {
@@ -30,12 +33,24 @@ export default function ProfilScreen({ navigation }: ProfilScreenProps) {
     getAccountStatuses('184602123068116992').then(setStatuses, (error) => console.warn('fetch error:', error));
   }, []);
 
+  const updateLayout = (event: LayoutChangeEvent) => {
+    const windowWidth = event.nativeEvent.layout.width;
+    if (width !== windowWidth) {
+      setWidth(width);
+    }
+  };
+
+  const minImageWidth = 110;
+  const padding = 10;
+  const columnCount = Math.floor((width - padding) / minImageWidth);
+  const imageSize = (width - padding) / columnCount;
+
   return (
-    <ScrollView>
+    <ScrollView onLayout={updateLayout}>
       {
         account ? (
-          <View style={{ backgroundColor: 'white', padding: 20 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ backgroundColor: 'white' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingTop: 20 }}>
               <Image
                 source={{ uri: account.avatar_static }}
                 style={{ width: 60, height: 60, borderRadius: 30, marginRight: 10 }}
@@ -49,7 +64,7 @@ export default function ProfilScreen({ navigation }: ProfilScreenProps) {
                 </View>
               </View>
             </View>
-            <View style={{ flexDirection: 'row', paddingTop: 20 }}>
+            <View style={{ flexDirection: 'row', paddingTop: 20, paddingHorizontal: 5 }}>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 22, textAlign: 'center' }}>{account.followers_count}</Text>
                 <Text style={{ textAlign: 'center' }}>followers</Text>
@@ -66,24 +81,40 @@ export default function ProfilScreen({ navigation }: ProfilScreenProps) {
           </View>
         ) : null
       }
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: 'white', padding: 5 }}>
         {
-          statuses?.map(status => <StatusItem key={status.id} status={status} navigation={navigation} />)
+          statuses?.map(status => (
+            <QuadraticStatusItem
+              key={status.id}
+              size={imageSize}
+              status={status}
+              navigation={navigation}
+            />
+          ))
         }
       </View>
     </ScrollView>
   );
 }
 
-function StatusItem({ status, navigation }: { status: Status, navigation: StackNavigationProp<StackParamList, 'Profil'> }) {
+interface QuadraticStatusItemProps {
+  size: number;
+  status: Status;
+  navigation: StackNavigationProp<StackParamList, 'Profil'>;
+}
+
+function QuadraticStatusItem({ size, status }: QuadraticStatusItemProps) {
   const imageUrl = status.media_attachments?.[0]?.preview_url;
-  const size = 110;
 
   return (
-    <Image
-      source={{ uri: imageUrl }}
-      resizeMode="cover"
-      style={{ width: size, height: size, margin: 10 }}
-    />
+    <TouchableOpacity
+      style={{ width: size }}
+    >
+      <Image
+        source={{ uri: imageUrl }}
+        resizeMode="cover"
+        style={{ width: size - 10, height: size - 10, margin: 5 }}
+      />
+    </TouchableOpacity>
   )
 }
