@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Image,
   Text,
   TouchableOpacity,
@@ -59,8 +58,8 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
   const onProfilPressed = () => {
     navigation.push('Profil', { profilId: status.account.id });
   };
-  const onPressed = () => {
-
+  const onImagePressed = () => {
+    navigation.push('StatusDetail', { status });
   };
   const onLinkPressed = (
     _event: GestureResponderEvent,
@@ -93,7 +92,7 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
           <Text>...</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={onPressed}>
+      <TouchableOpacity onPress={onImagePressed}>
         <Image
           source={{ uri: imageUrl }}
           resizeMode="cover"

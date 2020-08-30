@@ -103,11 +103,12 @@ interface QuadraticStatusItemProps {
   navigation: StackNavigationProp<StackParamList, 'Profil'>;
 }
 
-function QuadraticStatusItem({ size, status }: QuadraticStatusItemProps) {
+function QuadraticStatusItem({ size, status, navigation }: QuadraticStatusItemProps) {
   const imageUrl = status.media_attachments?.[0]?.preview_url;
 
   return (
     <TouchableOpacity
+      onPress={() => navigation.push('StatusDetail', { status })}
       style={{ width: size }}
     >
       <Image
