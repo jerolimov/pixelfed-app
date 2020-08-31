@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import {
   Image,
   TouchableOpacity,
@@ -23,6 +23,13 @@ export default function AccountDetailScreen({ navigation, route }: AccountDetail
   const [width, setWidth] = useState(Dimensions.get('window').width);
   const [account, setAccount] = useState<Account>(route.params.account);
   const [statuses, setStatuses] = useState<Status[]>();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: account.display_name,
+      headerBackTitleVisible: false,
+    });
+  }, [account]);
 
   useEffect(() => {
     getAccount(account).then(setAccount, (error) => console.warn('fetch error:', error));
