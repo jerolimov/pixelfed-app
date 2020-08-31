@@ -12,8 +12,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { StackParamList } from '../routes';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
-import { getTimelineHome, Status } from '../api';
 import { FavIcon, ReblogIcon } from '../components/Icons';
+import { getTimelineHome, Status, setStatusFavourited } from '../api';
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>,
@@ -25,6 +25,10 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     getTimelineHome().then(setStatuses, (error) => console.warn('fetch error:', error));
   }, []);
 
+  const updateStatus = (status: Status) => {
+    setStatuses(statuses => statuses?.map(s => s.id === status.id ? status : s));
+  };
+
   return (
     <ScrollView>
       <Container>
@@ -35,14 +39,21 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         />
         */}
         {
-          statuses?.map(status => <StatusItem key={status.id} status={status} navigation={navigation} />)
+          statuses?.map(status => (
+            <StatusItem
+              key={status.id}
+              status={status}
+              navigation={navigation}
+              onUpdateStatus={updateStatus}
+            />
+          ))
         }
       </Container>
     </ScrollView>
   );
 }
 
-function StatusItem({ status, navigation }: { status: Status, navigation: StackNavigationProp<StackParamList, 'Home'> }) {
+function StatusItem({ status, navigation, onUpdateStatus }: { status: Status, navigation: StackNavigationProp<StackParamList, 'Home'>, onUpdateStatus: (status: Status) => void }) {
   const [aspectRatio, setAspectRatio] = useState(1);
 
   const userDisplayName = status.account.display_name;
@@ -69,6 +80,11 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
   ) => {
     console.log('onLinkPress', href, htmlAttribs);
   };
+  const changeStatusFavourited = (favourited: boolean) => {
+    setStatusFavourited(status, favourited).then(onUpdateStatus, (error) => {
+      console.warn('Changed failed', error);
+    })
+  }
 
   return (
     <View style={{ padding: 10, margin: 10 }}>
@@ -98,8 +114,8 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
         />
       </TouchableOpacity>
       <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
-        <TouchableOpacity>
-          <FavIcon enabled={status.favourites_count > 0} />
+        <TouchableOpacity onPress={() => changeStatusFavourited(!status.favourited)}>
+          <FavIcon active={status.favourited} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.push('StatusFavouritedList', { status })}>
           <Text style={{ padding: 5, paddingRight: 20 }}>

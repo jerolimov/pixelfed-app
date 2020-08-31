@@ -2,12 +2,11 @@ import React from 'react';
 import { useTheme } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export const FavIcon = ({ enabled }: { enabled: boolean }) => {
-  const theme = useTheme();
+export const FavIcon = ({ active }: { active: boolean }) => {
   const color = '#b00000';
   return (
     <MaterialIcons
-        name={enabled ? 'favorite' : 'favorite-border'}
+        name={active ? 'favorite' : 'favorite-border'}
         size={32}
         color={color}
     />

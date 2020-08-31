@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { Status } from '../api';
+import { Status, setStatusFavourited } from '../api';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
 import { StackParamList } from '../routes';
 import { FavIcon, ReblogIcon } from '../components/Icons';
@@ -21,7 +21,7 @@ type StatusDetailScreenProps = {
 }
 
 export default function StatusDetailScreen({ navigation, route }: StatusDetailScreenProps) {
-  const { status } = route.params;
+  const [status, setStatus] = useState<Status>(route.params.status);
 
   const userDisplayName = status.account.display_name;
   const imageUrl = status.media_attachments?.[0]?.preview_url;
@@ -46,6 +46,11 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
     htmlAttribs: HtmlAttributesDictionary
   ) => {
     console.log('onLinkPress', href, htmlAttribs);
+  };
+  const changeStatusFavourited = (favourited: boolean) => {
+    setStatusFavourited(status, favourited).then(setStatus, (error) => {
+      console.warn('Changed failed', error);
+    })
   };
 
   return (
@@ -76,8 +81,8 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
         />
         <View style={{ padding: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
-            <TouchableOpacity>
-              <FavIcon enabled={status.favourites_count > 0} />
+            <TouchableOpacity onPress={() => changeStatusFavourited(!status.favourited)}>
+              <FavIcon active={status.favourited} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.push('StatusFavouritedList', { status })}>
               <Text style={{ padding: 5, paddingRight: 20 }}>

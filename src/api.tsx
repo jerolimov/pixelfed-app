@@ -167,6 +167,26 @@ export const getStatusFavouritedBy = async (status: Status): Promise<Account[]> 
   return response.json();
 }
 
+export const setStatusFavourited = async (status: Status, favourited: boolean): Promise<Status> => {
+  const method = 'POST';
+  const headers = {
+    Authorization: 'Bearer ' + accessToken,
+    Accept: 'application/json',
+  }
+  const response = await fetch(`${baseUrl}/api/v1/statuses/${status.id}/${favourited ? 'favourite' : 'unfavourite'}`, { method, headers });
+  if (response.status === 429) {
+    console.warn('too many requests:', response.headers);
+    throw new Error(`429 Too Many Requests`);
+  } else if (response.status !== 200) {
+    throw new Error(`Unexpected status code ${response.status}`);
+  }
+  const result: Status = await response.json();
+  return {
+    ...result,
+    favourited,
+  }
+}
+
 export const getStatusRebloggedBy = async (status: Status): Promise<Account[]> => {
   const headers = {
     Authorization: 'Bearer ' + accessToken,
