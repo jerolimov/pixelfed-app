@@ -31,8 +31,11 @@ export interface HTMLProps {
 
 export function HTML(props: HTMLProps) {
   const theme = useTheme();
+  const baseFontStyle = {
+    color: theme.colors.text,
+  };
   const tagsStyles = {
     a: { color: theme.colors.primary },
   };
-  return <RNRenderHTML {...props} tagsStyles={tagsStyles} />
+  return <RNRenderHTML {...props} baseFontStyle={baseFontStyle} tagsStyles={tagsStyles} />
 }
