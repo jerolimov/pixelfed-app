@@ -37,10 +37,6 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
     setAspectRatio(width / height);
   };
 
-  // Fix an issue with missing spaces between links (hashtags)
-  // See also https://github.com/archriss/react-native-render-html/issues/261
-  const html = status.content.replace(/\/a>\s<a/g, '/a>&shy; <a');
-
   const onProfilPressed = () => {
     navigation.push('AccountDetail', { account: status.account });
   };
@@ -97,7 +93,7 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
               </Text>
             </TouchableOpacity>
           </View>
-          <HTML html={html} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
+          <HTML html={status.content} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
           <Text style={{ paddingVertical: 5 }}>Created {daysAgo} days ago</Text>
           <Text style={{ paddingVertical: 5 }}>{status.replies_count} replies</Text>
         </View>

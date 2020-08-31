@@ -29,7 +29,7 @@ export interface HTMLProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-export function HTML(props: HTMLProps) {
+export function HTML({ html, ...props }: HTMLProps) {
   const theme = useTheme();
   const baseFontStyle = {
     color: theme.colors.text,
@@ -37,5 +37,17 @@ export function HTML(props: HTMLProps) {
   const tagsStyles = {
     a: { color: theme.colors.primary },
   };
-  return <RNRenderHTML {...props} baseFontStyle={baseFontStyle} tagsStyles={tagsStyles} />
+
+  // Fix an issue with missing spaces between links (hashtags)
+  // See also https://github.com/archriss/react-native-render-html/issues/261
+  const fixedHtml = html.replace(/\/a>\s<a/g, '/a>&shy; <a');
+
+  return (
+    <RNRenderHTML
+      html={fixedHtml}
+      {...props}
+      baseFontStyle={baseFontStyle}
+      tagsStyles={tagsStyles}
+    />
+  );
 }

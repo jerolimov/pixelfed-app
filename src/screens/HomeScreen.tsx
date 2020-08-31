@@ -70,10 +70,6 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
     console.log('onLinkPress', href, htmlAttribs);
   };
 
-  // Fix an issue with missing spaces between links (hashtags)
-  // See also https://github.com/archriss/react-native-render-html/issues/261
-  const html = status.content.replace(/\/a>\s<a/g, '/a>&shy; <a');
-
   return (
     <View style={{ padding: 10, margin: 10 }}>
       <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
@@ -119,7 +115,7 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
           </Text>
         </TouchableOpacity>
       </View>
-      <HTML html={html} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
+      <HTML html={status.content} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
       <Text style={{ paddingVertical: 5 }}>Created {daysAgo} days ago</Text>
       <Text style={{ paddingVertical: 5 }}>{status.replies_count} replies</Text>
     </View>
