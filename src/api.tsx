@@ -82,7 +82,7 @@ export const getTimelineHome = async (): Promise<Status[]> => {
     Authorization: 'Bearer ' + accessToken,
     Accept: 'application/json',
   }
-  const response = await fetch(`${baseUrl}/api/v1/timelines/home`, { headers });
+  const response = await fetch(`${baseUrl}/api/v1/timelines/home?limit=20`, { headers });
   if (response.status === 429) {
     console.warn('too many requests:', response.headers);
     throw new Error(`429 Too Many Requests`);
