@@ -7,13 +7,14 @@ import {
   NativeSyntheticEvent,
   ImageLoadEventData,
   GestureResponderEvent,
+  Share,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { StackParamList } from '../routes';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
-import { FavIcon, ReblogIcon } from '../components/Icons';
 import { getTimelineHome, Status, setStatusFavourited } from '../api';
+import { FavIcon, ReblogIcon, ShareIcon, MoreIcon } from '../components/Icons';
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>,
@@ -85,10 +86,17 @@ function StatusItem({ status, navigation, onUpdateStatus }: { status: Status, na
       console.warn('Changed failed', error);
     })
   }
+  const share = () => {
+    Share.share({ title: '', url: status.url }).then((result) => {
+      console.warn('Share result', result);
+    }, (error) => {
+      console.warn('Share error', error);
+    });
+  };
 
   return (
     <View style={{ padding: 10, margin: 10 }}>
-      <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
         <TouchableOpacity
           onPress={onProfilPressed}
           style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
@@ -102,7 +110,7 @@ function StatusItem({ status, navigation, onUpdateStatus }: { status: Status, na
           </Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text>...</Text>
+          <MoreIcon />
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={onImagePressed}>
@@ -123,12 +131,15 @@ function StatusItem({ status, navigation, onUpdateStatus }: { status: Status, na
           </Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <ReblogIcon enabled={status.favourites_count > 0} />
+          <ReblogIcon />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.push('StatusRebloggedList', { status })}>
           <Text style={{ padding: 5, paddingRight: 20 }}>
             {status.reblogs_count} Reblogs
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={share}>
+          <ShareIcon />
         </TouchableOpacity>
       </View>
       <HTML html={status.content} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />

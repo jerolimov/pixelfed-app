@@ -13,13 +13,13 @@ export const FavIcon = ({ active }: { active: boolean }) => {
   );
 };
 
-export const ReblogIcon = ({ enabled }: { enabled: boolean }) => {
+export const ReblogIcon = () => {
   const theme = useTheme();
-  const color = theme.colors.primary;
+  const color = theme.colors.text;
   return (
     <MaterialIcons
       name="repeat"
-      size={32}
+      size={16}
       color={color}
     />
   );
@@ -31,8 +31,19 @@ export const ShareIcon = () => {
   return (
     <MaterialIcons
       name="share"
-      size={32}
+      size={24}
       color={color}
     />
   );
 };
+
+export const MoreIcon = () => {
+  const theme = useTheme();
+  return (
+    <MaterialIcons
+      name="more-horiz"
+      size={24}
+      color={theme.colors.text}
+    />
+  );
+}

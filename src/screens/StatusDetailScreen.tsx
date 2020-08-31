@@ -7,13 +7,14 @@ import {
   NativeSyntheticEvent,
   View,
   GestureResponderEvent,
+  Share,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { Status, setStatusFavourited } from '../api';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
 import { StackParamList } from '../routes';
-import { FavIcon, ReblogIcon } from '../components/Icons';
+import { FavIcon, ReblogIcon, ShareIcon, MoreIcon } from '../components/Icons';
 
 type StatusDetailScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'StatusDetail'>,
@@ -52,11 +53,18 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
       console.warn('Changed failed', error);
     })
   };
+  const share = () => {
+    Share.share({ title: '', url: status.url }).then((result) => {
+      console.warn('Share result', result);
+    }, (error) => {
+      console.warn('Share error', error);
+    });
+  };
 
   return (
     <ScrollView>
       <Container>
-        <View style={{ flexDirection: 'row', padding: 10 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
           <TouchableOpacity
             onPress={onProfilPressed}
             style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
@@ -70,7 +78,7 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
             </Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text>...</Text>
+            <MoreIcon />
           </TouchableOpacity>
         </View>
         <Image
@@ -90,12 +98,15 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
               </Text>
             </TouchableOpacity>
             <TouchableOpacity>
-              <ReblogIcon enabled={status.favourites_count > 0} />
+              <ReblogIcon />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.push('StatusRebloggedList', { status })}>
               <Text style={{ padding: 5, paddingRight: 20 }}>
                 {status.reblogs_count} Reblogs
               </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={share}>
+              <ShareIcon />
             </TouchableOpacity>
           </View>
           <HTML html={status.content} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
