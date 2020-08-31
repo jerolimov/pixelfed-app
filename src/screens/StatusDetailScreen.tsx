@@ -111,7 +111,9 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
           </View>
           <HTML html={status.content} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
           <Text style={{ paddingVertical: 5 }}>Created {daysAgo} days ago</Text>
+          {/*
           <Text style={{ paddingVertical: 5 }}>{status.replies_count} replies</Text>
+          */}
         </View>
       </Container>
     </ScrollView>
