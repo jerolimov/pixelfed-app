@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { useColorScheme, StatusBar } from 'react-native';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './src/screens/HomeScreen';
@@ -13,26 +13,15 @@ import StatusFavouritedListScreen from './src/screens/StatusFavouritedListScreen
 import StatusRebloggedListScreen from './src/screens/StatusRebloggedListScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { StackParamList } from './src/routes';
+import { DarkTheme, LightTheme } from './src/themes';
 
 const Stack = createStackNavigator<StackParamList>();
 
 export default function App() {
   const colorScheme = useColorScheme();
 
-  const theme = colorScheme === 'dark' ? {
-    ...DarkTheme,
-    colors: {
-      ...DarkTheme.colors,
-      primary: 'orange',
-      background: '#222222',
-      card: '#181818',
-      text: 'white',
-      border: '#555555',
-    },
-  } : DefaultTheme;
-
   return (
-    <NavigationContainer theme={theme}>
+    <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : LightTheme}>
       <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
