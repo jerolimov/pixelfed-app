@@ -69,18 +69,18 @@ export default function AccountDetailScreen({ navigation, route }: AccountDetail
                   style={{ flex: 1 }}
                 >
                   <Text style={{ fontSize: 22, textAlign: 'center' }}>{account.followers_count}</Text>
-                  <Text style={{ textAlign: 'center' }}>followers</Text>
+                  <Text style={{ textAlign: 'center' }}>Followers</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigation.push('AccountFollowingList', { account })}
                   style={{ flex: 1 }}
                 >
                   <Text style={{ fontSize: 22, textAlign: 'center' }}>{account.following_count}</Text>
-                  <Text style={{ textAlign: 'center' }}>following</Text>
+                  <Text style={{ textAlign: 'center' }}>Following</Text>
                 </TouchableOpacity>
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 22, textAlign: 'center' }}>{account.statuses_count}</Text>
-                  <Text style={{ textAlign: 'center' }}>statuses</Text>
+                  <Text style={{ textAlign: 'center' }}>Statuses</Text>
                 </View>
               </View>
             </View>
