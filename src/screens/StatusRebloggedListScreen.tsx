@@ -45,7 +45,8 @@ function AccountItem({ account, navigation }: { account: Account, navigation: St
         style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
       />
       <Text style={{ flex: 1 }}>
-        {account.display_name}
+        <Text style={{ fontWeight: 'bold' }}>{account.display_name}{'\n'}</Text>
+        {account.url}
       </Text>
     </TouchableOpacity>
   )
