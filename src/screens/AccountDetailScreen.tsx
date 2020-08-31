@@ -14,19 +14,21 @@ import { Container, Text } from '../components/ThemeComponents';
 
 import { getAccount, getAccountStatuses, Account, Status } from '../api';
 
-type ProfilScreenProps = {
-  navigation: StackNavigationProp<StackParamList, 'Profil'>,
+type AccountDetailScreenProps = {
+  navigation: StackNavigationProp<StackParamList, 'AccountDetail'>,
+  route: { params: { account: Account } };
 }
 
-export default function ProfilScreen({ navigation }: ProfilScreenProps) {
+export default function AccountDetailScreen({ navigation, route }: AccountDetailScreenProps) {
   const [width, setWidth] = useState(Dimensions.get('window').width);
-  const [account, setAccount] = useState<Account>();
+  const [account, setAccount] = useState<Account>(route.params.account);
   const [statuses, setStatuses] = useState<Status[]>();
+
   useEffect(() => {
-    getAccount('184602123068116992').then(setAccount, (error) => console.warn('fetch error:', error));
+    getAccount(account).then(setAccount, (error) => console.warn('fetch error:', error));
   }, []);
   useEffect(() => {
-    getAccountStatuses('184602123068116992').then(setStatuses, (error) => console.warn('fetch error:', error));
+    getAccountStatuses(account).then(setStatuses, (error) => console.warn('fetch error:', error));
   }, []);
 
   const updateLayout = (event: LayoutChangeEvent) => {
@@ -62,14 +64,20 @@ export default function ProfilScreen({ navigation }: ProfilScreenProps) {
                 </View>
               </View>
               <View style={{ flexDirection: 'row', paddingTop: 20, paddingHorizontal: 5 }}>
-                <View style={{ flex: 1 }}>
+                <TouchableOpacity
+                  onPress={() => navigation.push('AccountFollowersList', { account })}
+                  style={{ flex: 1 }}
+                >
                   <Text style={{ fontSize: 22, textAlign: 'center' }}>{account.followers_count}</Text>
                   <Text style={{ textAlign: 'center' }}>followers</Text>
-                </View>
-                <View style={{ flex: 1 }}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.push('AccountFollowingList', { account })}
+                  style={{ flex: 1 }}
+                >
                   <Text style={{ fontSize: 22, textAlign: 'center' }}>{account.following_count}</Text>
                   <Text style={{ textAlign: 'center' }}>following</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 22, textAlign: 'center' }}>{account.statuses_count}</Text>
                   <Text style={{ textAlign: 'center' }}>statuses</Text>
@@ -98,7 +106,7 @@ export default function ProfilScreen({ navigation }: ProfilScreenProps) {
 interface QuadraticStatusItemProps {
   size: number;
   status: Status;
-  navigation: StackNavigationProp<StackParamList, 'Profil'>;
+  navigation: StackNavigationProp<StackParamList, 'AccountDetail'>;
 }
 
 function QuadraticStatusItem({ size, status, navigation }: QuadraticStatusItemProps) {

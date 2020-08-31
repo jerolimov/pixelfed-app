@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch as RNSwitch, Text as RNText, TextProps, View, ViewProps, SwitchProps, GestureResponderEvent } from 'react-native';
+import { Switch as RNSwitch, Text as RNText, TextProps, View, ViewProps, SwitchProps, GestureResponderEvent, StyleProp, ViewStyle } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { default as RNRenderHTML, HtmlAttributesDictionary } from "react-native-render-html";
 
@@ -26,6 +26,7 @@ export interface HTMLProps {
     href: string,
     htmlAttribs: HtmlAttributesDictionary
   ) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export function HTML(props: HTMLProps) {

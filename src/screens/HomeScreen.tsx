@@ -13,6 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { StackParamList } from '../routes';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
 import { getTimelineHome, Status } from '../api';
+import { FavIcon, ReblogIcon } from '../components/Icons';
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>,
@@ -56,7 +57,7 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
     setAspectRatio(width / height);
   };
   const onProfilPressed = () => {
-    navigation.push('Profil', { profilId: status.account.id });
+    navigation.push('AccountDetail', { account: status.account });
   };
   const onImagePressed = () => {
     navigation.push('StatusDetail', { status });
@@ -100,21 +101,27 @@ function StatusItem({ status, navigation }: { status: Status, navigation: StackN
           onLoad={onImageLoaded}
         />
       </TouchableOpacity>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
         <TouchableOpacity>
-          <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
+          <FavIcon enabled={status.favourites_count > 0} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push('StatusFavouritedList', { status })}>
+          <Text style={{ padding: 5, paddingRight: 20 }}>
             {status.favourites_count} Favs
           </Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
+          <ReblogIcon enabled={status.favourites_count > 0} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push('StatusRebloggedList', { status })}>
+          <Text style={{ padding: 5, paddingRight: 20 }}>
             {status.reblogs_count} Reblogs
           </Text>
         </TouchableOpacity>
       </View>
-      <HTML html={html} onLinkPress={onLinkPressed} />
-      <Text>Created {daysAgo} days ago</Text>
-      <Text>{status.replies_count} replies</Text>
+      <HTML html={html} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
+      <Text style={{ paddingVertical: 5 }}>Created {daysAgo} days ago</Text>
+      <Text style={{ paddingVertical: 5 }}>{status.replies_count} replies</Text>
     </View>
   )
 }

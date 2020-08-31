@@ -92,12 +92,12 @@ export const getTimelineHome = async (): Promise<Status[]> => {
   return response.json();
 }
 
-export const getAccount = async (id: string): Promise<Account> => {
+export const getAccount = async (account: Account): Promise<Account> => {
   const headers = {
     Authorization: 'Bearer ' + accessToken,
     Accept: 'application/json',
   }
-  const response = await fetch(`${baseUrl}/api/v1/accounts/${id}`, { headers });
+  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}`, { headers });
   if (response.status === 429) {
     console.warn('too many requests:', response.headers);
     throw new Error(`429 Too Many Requests`);
@@ -107,12 +107,72 @@ export const getAccount = async (id: string): Promise<Account> => {
   return response.json();
 }
 
-export const getAccountStatuses = async (id: string): Promise<Status[]> => {
+export const getAccountStatuses = async (account: Account): Promise<Status[]> => {
   const headers = {
     Authorization: 'Bearer ' + accessToken,
     Accept: 'application/json',
   }
-  const response = await fetch(`${baseUrl}/api/v1/accounts/${id}/statuses`, { headers });
+  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}/statuses`, { headers });
+  if (response.status === 429) {
+    console.warn('too many requests:', response.headers);
+    throw new Error(`429 Too Many Requests`);
+  } else if (response.status !== 200) {
+    throw new Error(`Unexpected status code ${response.status}`);
+  }
+  return response.json();
+}
+
+export const getAccountFollowers = async (account: Account): Promise<Account[]> => {
+  const headers = {
+    Authorization: 'Bearer ' + accessToken,
+    Accept: 'application/json',
+  }
+  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}/followers`, { headers });
+  if (response.status === 429) {
+    console.warn('too many requests:', response.headers);
+    throw new Error(`429 Too Many Requests`);
+  } else if (response.status !== 200) {
+    throw new Error(`Unexpected status code ${response.status}`);
+  }
+  return response.json();
+}
+
+export const getAccountFollowing = async (account: Account): Promise<Account[]> => {
+  const headers = {
+    Authorization: 'Bearer ' + accessToken,
+    Accept: 'application/json',
+  }
+  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}/following`, { headers });
+  if (response.status === 429) {
+    console.warn('too many requests:', response.headers);
+    throw new Error(`429 Too Many Requests`);
+  } else if (response.status !== 200) {
+    throw new Error(`Unexpected status code ${response.status}`);
+  }
+  return response.json();
+}
+
+export const getStatusFavouritedBy = async (status: Status): Promise<Account[]> => {
+  const headers = {
+    Authorization: 'Bearer ' + accessToken,
+    Accept: 'application/json',
+  }
+  const response = await fetch(`${baseUrl}/api/v1/statuses/${status.id}/favourited_by`, { headers });
+  if (response.status === 429) {
+    console.warn('too many requests:', response.headers);
+    throw new Error(`429 Too Many Requests`);
+  } else if (response.status !== 200) {
+    throw new Error(`Unexpected status code ${response.status}`);
+  }
+  return response.json();
+}
+
+export const getStatusRebloggedBy = async (status: Status): Promise<Account[]> => {
+  const headers = {
+    Authorization: 'Bearer ' + accessToken,
+    Accept: 'application/json',
+  }
+  const response = await fetch(`${baseUrl}/api/v1/statuses/${status.id}/reblogged_by`, { headers });
   if (response.status === 429) {
     console.warn('too many requests:', response.headers);
     throw new Error(`429 Too Many Requests`);

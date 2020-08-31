@@ -1,8 +1,12 @@
-import { Status } from "./api";
+import { Account, Status } from "./api";
 
 export type StackParamList = {
   Login: any,
   Home: any,
-  Profil: any,
+  AccountDetail: { account: Account },
+  AccountFollowersList: { account: Account },
+  AccountFollowingList: { account: Account },
   StatusDetail: { status: Status },
+  StatusFavouritedList: { status: Status },
+  StatusRebloggedList: { status: Status },
 }

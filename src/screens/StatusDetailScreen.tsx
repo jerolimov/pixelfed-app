@@ -13,13 +13,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Status } from '../api';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
 import { StackParamList } from '../routes';
+import { FavIcon, ReblogIcon } from '../components/Icons';
 
-type DetailsScreenProps = {
+type StatusDetailScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'StatusDetail'>,
   route: { params: { status: Status } };
 }
 
-export default function DetailsScreen({ navigation, route }: DetailsScreenProps) {
+export default function StatusDetailScreen({ navigation, route }: StatusDetailScreenProps) {
   const { status } = route.params;
 
   const userDisplayName = status.account.display_name;
@@ -41,7 +42,7 @@ export default function DetailsScreen({ navigation, route }: DetailsScreenProps)
   const html = status.content.replace(/\/a>\s<a/g, '/a>&shy; <a');
 
   const onProfilPressed = () => {
-    navigation.push('Profil', { profilId: status.account.id });
+    navigation.push('AccountDetail', { account: status.account });
   };
   const onLinkPressed = (
     _event: GestureResponderEvent,
@@ -78,21 +79,27 @@ export default function DetailsScreen({ navigation, route }: DetailsScreenProps)
           onLoad={onImageLoaded}
         />
         <View style={{ padding: 10 }}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
             <TouchableOpacity>
-              <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
+              <FavIcon enabled={status.favourites_count > 0} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.push('StatusFavouritedList', { status })}>
+              <Text style={{ padding: 5, paddingRight: 20 }}>
                 {status.favourites_count} Favs
               </Text>
             </TouchableOpacity>
             <TouchableOpacity>
-              <Text style={{ paddingVertical: 10, paddingRight: 10 }}>
+              <ReblogIcon enabled={status.favourites_count > 0} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.push('StatusRebloggedList', { status })}>
+              <Text style={{ padding: 5, paddingRight: 20 }}>
                 {status.reblogs_count} Reblogs
               </Text>
             </TouchableOpacity>
           </View>
-          <HTML html={html} onLinkPress={onLinkPressed} />
-          <Text>Created {daysAgo} days ago</Text>
-          <Text>{status.replies_count} replies</Text>
+          <HTML html={html} onLinkPress={onLinkPressed} containerStyle={{ paddingVertical: 5 }} />
+          <Text style={{ paddingVertical: 5 }}>Created {daysAgo} days ago</Text>
+          <Text style={{ paddingVertical: 5 }}>{status.replies_count} replies</Text>
         </View>
       </Container>
     </ScrollView>

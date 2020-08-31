@@ -5,8 +5,12 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './src/screens/HomeScreen';
+import AccountDetailScreen from './src/screens/AccountDetailScreen';
+import AccountFollowersListScreen from './src/screens/AccountFollowersListScreen';
+import AccountFollowingListScreen from './src/screens/AccountFollowingListScreen';
 import StatusDetailScreen from './src/screens/StatusDetailScreen';
-import ProfilScreen from './src/screens/ProfilScreen';
+import StatusFavouritedListScreen from './src/screens/StatusFavouritedListScreen';
+import StatusRebloggedListScreen from './src/screens/StatusRebloggedListScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { StackParamList } from './src/routes';
 
@@ -32,8 +36,12 @@ export default function App() {
       <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Profil" component={ProfilScreen} />
+        <Stack.Screen name="AccountDetail" component={AccountDetailScreen} />
+        <Stack.Screen name="AccountFollowersList" component={AccountFollowersListScreen} />
+        <Stack.Screen name="AccountFollowingList" component={AccountFollowingListScreen} />
         <Stack.Screen name="StatusDetail" component={StatusDetailScreen} />
+        <Stack.Screen name="StatusFavouritedList" component={StatusFavouritedListScreen} />
+        <Stack.Screen name="StatusRebloggedList" component={StatusRebloggedListScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
