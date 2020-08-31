@@ -25,13 +25,13 @@ export default function App() {
       <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="AccountDetail" component={AccountDetailScreen} />
-        <Stack.Screen name="AccountFollowersList" component={AccountFollowersListScreen} />
-        <Stack.Screen name="AccountFollowingList" component={AccountFollowingListScreen} />
-        <Stack.Screen name="StatusDetail" component={StatusDetailScreen} />
-        <Stack.Screen name="StatusFavouritedList" component={StatusFavouritedListScreen} />
-        <Stack.Screen name="StatusRebloggedList" component={StatusRebloggedListScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="AccountDetail" component={AccountDetailScreen} options={{ title: '' }} />
+        <Stack.Screen name="AccountFollowersList" component={AccountFollowersListScreen} options={{ title: 'Followers' }} />
+        <Stack.Screen name="AccountFollowingList" component={AccountFollowingListScreen} options={{ title: 'Following' }} />
+        <Stack.Screen name="StatusDetail" component={StatusDetailScreen} options={{ title: '' }} />
+        <Stack.Screen name="StatusFavouritedList" component={StatusFavouritedListScreen} options={{ title: 'Liked' }} />
+        <Stack.Screen name="StatusRebloggedList" component={StatusRebloggedListScreen} options={{ title: 'Reblogged' }} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
