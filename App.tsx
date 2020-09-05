@@ -2,7 +2,9 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { useColorScheme, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createSharedElementStackNavigator, SharedElementCompatRoute, SharedElementsConfig, SharedElementsComponentConfig } from 'react-navigation-shared-element';
+import { createSharedElementStackNavigator, SharedElementCompatRoute, SharedElementsConfig } from 'react-navigation-shared-element';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import TimelineHomeScreen from './src/screens/TimelineHomeScreen';
 import AccountDetailScreen from './src/screens/AccountDetailScreen';
@@ -95,6 +97,55 @@ const handle = (
 }
 
 const Stack = createSharedElementStackNavigator<StackParamList>();
+const HomeTab = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="TimelineHome"
+      component={TimelineHomeScreen}
+      options={{ title: 'Home' }}
+      sharedElements={(route, otherRoute, showing) => handle('Home', route, otherRoute, showing)}
+    />
+    <Stack.Screen
+      name="AccountDetail"
+      component={AccountDetailScreen}
+      options={{ title: '' }}
+      sharedElements={(route, otherRoute, showing) => handle('AccountDetail', route, otherRoute, showing)}
+    />
+    <Stack.Screen name="AccountFollowersList" component={AccountFollowersListScreen} options={{ title: 'Followers' }} />
+    <Stack.Screen name="AccountFollowingList" component={AccountFollowingListScreen} options={{ title: 'Following' }} />
+    <Stack.Screen
+      name="StatusDetail"
+      component={StatusDetailScreen}
+      options={{ title: '' }}
+      sharedElements={(route, otherRoute, showing) => handle('StatusDetail', route, otherRoute, showing)}
+    />
+    <Stack.Screen name="StatusFavouritedList" component={StatusFavouritedListScreen} options={{ title: 'Liked' }} />
+    <Stack.Screen name="StatusRebloggedList" component={StatusRebloggedListScreen} options={{ title: 'Reblogged' }} />
+    <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} />
+  </Stack.Navigator>
+);
+
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeTab} />
+      <Tab.Screen name="Settings" component={HomeTab} />
+    </Tab.Navigator>
+  );
+}
+
+const Tab2 = createMaterialBottomTabNavigator();
+
+function MyTabs2() {
+  return (
+    <Tab2.Navigator>
+      <Tab2.Screen name="Home" component={HomeTab} />
+      <Tab2.Screen name="Settings" component={HomeTab} />
+    </Tab2.Navigator>
+  );
+}
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -102,31 +153,7 @@ export default function App() {
   return (
     <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : LightTheme}>
       <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
-      <Stack.Navigator>
-        <Stack.Screen
-          name="TimelineHome"
-          component={TimelineHomeScreen}
-          options={{ title: 'Home' }}
-          sharedElements={(route, otherRoute, showing) => handle('Home', route, otherRoute, showing)}
-        />
-        <Stack.Screen
-          name="AccountDetail"
-          component={AccountDetailScreen}
-          options={{ title: '' }}
-          sharedElements={(route, otherRoute, showing) => handle('AccountDetail', route, otherRoute, showing)}
-        />
-        <Stack.Screen name="AccountFollowersList" component={AccountFollowersListScreen} options={{ title: 'Followers' }} />
-        <Stack.Screen name="AccountFollowingList" component={AccountFollowingListScreen} options={{ title: 'Following' }} />
-        <Stack.Screen
-          name="StatusDetail"
-          component={StatusDetailScreen}
-          options={{ title: '' }}
-          sharedElements={(route, otherRoute, showing) => handle('StatusDetail', route, otherRoute, showing)}
-        />
-        <Stack.Screen name="StatusFavouritedList" component={StatusFavouritedListScreen} options={{ title: 'Liked' }} />
-        <Stack.Screen name="StatusRebloggedList" component={StatusRebloggedListScreen} options={{ title: 'Reblogged' }} />
-        <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} />
-      </Stack.Navigator>
+      <MyTabs />
     </NavigationContainer>
   );
 }
