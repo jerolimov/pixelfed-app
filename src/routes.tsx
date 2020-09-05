@@ -2,7 +2,7 @@ import { Account, Status } from "./api";
 
 export type StackParamList = {
   Login: any,
-  Home: any,
+  TimelineHome: any,
   AccountDetail: { account: Account },
   AccountFollowersList: { account: Account },
   AccountFollowingList: { account: Account },

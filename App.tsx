@@ -4,7 +4,7 @@ import { useColorScheme, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createSharedElementStackNavigator, SharedElementCompatRoute, SharedElementsConfig, SharedElementsComponentConfig } from 'react-navigation-shared-element';
 
-import HomeScreen from './src/screens/HomeScreen';
+import TimelineHomeScreen from './src/screens/TimelineHomeScreen';
 import AccountDetailScreen from './src/screens/AccountDetailScreen';
 import AccountFollowersListScreen from './src/screens/AccountFollowersListScreen';
 import AccountFollowingListScreen from './src/screens/AccountFollowingListScreen';
@@ -104,8 +104,8 @@ export default function App() {
       <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} />
       <Stack.Navigator>
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="TimelineHome"
+          component={TimelineHomeScreen}
           options={{ title: 'Home' }}
           sharedElements={(route, otherRoute, showing) => handle('Home', route, otherRoute, showing)}
         />

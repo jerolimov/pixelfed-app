@@ -19,10 +19,10 @@ import { FavIcon, ReblogIcon, ShareIcon, MoreIcon } from '../components/Icons';
 import { getSharedElementPreviewImageId } from './StatusDetailScreen';
 
 type HomeScreenProps = {
-  navigation: StackNavigationProp<StackParamList, 'Home'>,
+  navigation: StackNavigationProp<StackParamList, 'TimelineHome'>,
 }
 
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+export default function TimelineHomeScreen({ navigation }: HomeScreenProps) {
   const [statuses, setStatuses] = useState<Status[]>();
   useEffect(() => {
     getTimelineHome().then(setStatuses, (error) => console.warn('fetch error:', error));
@@ -58,7 +58,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
 function StatusItem({ status, navigation, onUpdateStatus }: {
   status: Status,
-  navigation: StackNavigationProp<StackParamList, 'Home'>,
+  navigation: StackNavigationProp<StackParamList, 'TimelineHome'>,
   onUpdateStatus: (status: Status) => void },
 ) {
   const [aspectRatio, setAspectRatio] = useState(1);
