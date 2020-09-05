@@ -6,13 +6,17 @@ import {
   ScrollView,
   Dimensions,
   LayoutChangeEvent,
+  NativeSyntheticEvent,
+  ImageLoadEventData,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { SharedElement } from 'react-navigation-shared-element';
 
 import { StackParamList } from '../routes';
 import { Container, Text } from '../components/ThemeComponents';
 
 import { getAccount, getAccountStatuses, Account, Status } from '../api';
+import { getSharedElementPreviewImageId } from './StatusDetailScreen';
 
 type AccountDetailScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'AccountDetail'>,
@@ -117,18 +121,28 @@ interface QuadraticStatusItemProps {
 }
 
 function QuadraticStatusItem({ size, status, navigation }: QuadraticStatusItemProps) {
+  const [aspectRatio, setAspectRatio] = useState(1);
   const imageUrl = status.media_attachments?.[0]?.preview_url;
+
+  const onImageLoaded = (event: NativeSyntheticEvent<ImageLoadEventData>) => {
+    // console.log('Image loaded:', event.nativeEvent.source);
+    const { width, height } = event.nativeEvent.source;
+    setAspectRatio(width / height);
+  };
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.push('StatusDetail', { status })}
+      onPress={() => navigation.push('StatusDetail', { status, aspectRatio, animated: true })}
       style={{ width: size }}
     >
-      <Image
-        source={{ uri: imageUrl }}
-        resizeMode="cover"
-        style={{ width: size - 10, height: size - 10, margin: 5 }}
-      />
+      <SharedElement id={getSharedElementPreviewImageId(status)}>
+        <Image
+          source={{ uri: imageUrl }}
+          resizeMode="cover"
+          style={{ width: size - 10, height: size - 10, margin: 5 }}
+          onLoad={onImageLoaded}
+        />
+      </SharedElement>        
     </TouchableOpacity>
   )
 }

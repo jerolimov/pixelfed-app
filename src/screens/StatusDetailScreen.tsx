@@ -10,6 +10,7 @@ import {
   Share,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { SharedElement, SharedElementConfig } from 'react-navigation-shared-element';
 
 import { Status, setStatusFavourited } from '../api';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
@@ -18,8 +19,14 @@ import { FavIcon, ReblogIcon, ShareIcon, MoreIcon } from '../components/Icons';
 
 type StatusDetailScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'StatusDetail'>,
-  route: { params: { status: Status } };
+  route: { params: { status: Status, aspectRatio: number } };
 }
+
+export const getSharedElementPreviewImageId = (status: Status) => `status-${status.id}.preview_image`;
+export const getSharedElementPreviewImageConfig = (status: Status): SharedElementConfig => ({
+  id: `status-${status.id}.preview_image`,
+  align: 'center-center',
+});
 
 export default function StatusDetailScreen({ navigation, route }: StatusDetailScreenProps) {
   const [status, setStatus] = useState<Status>(route.params.status);
@@ -30,7 +37,7 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
   const oneDayInMs = 24 * 60 * 60 * 1000;
   const daysAgo = Math.round(daysAgoInMs / oneDayInMs);
 
-  const [aspectRatio, setAspectRatio] = useState(1);
+  const [aspectRatio, setAspectRatio] = useState(route.params.aspectRatio || 1);
 
   const onImageLoaded = (event: NativeSyntheticEvent<ImageLoadEventData>) => {
     // console.log('Image loaded:', event.nativeEvent.source);
@@ -81,12 +88,14 @@ export default function StatusDetailScreen({ navigation, route }: StatusDetailSc
             <MoreIcon />
           </TouchableOpacity>
         </View>
-        <Image
-          source={{ uri: imageUrl }}
-          resizeMode="cover"
-          style={{ aspectRatio }}
-          onLoad={onImageLoaded}
-        />
+        <SharedElement id={getSharedElementPreviewImageId(status)}>
+          <Image
+            source={{ uri: imageUrl }}
+            resizeMode="cover"
+            style={{ aspectRatio }}
+            onLoad={onImageLoaded}
+          />
+        </SharedElement>
         <View style={{ padding: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
             <TouchableOpacity onPress={() => changeStatusFavourited(!status.favourited)}>

@@ -10,11 +10,13 @@ import {
   Share,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { SharedElement } from 'react-navigation-shared-element';
 
 import { StackParamList } from '../routes';
 import { Container, Text, HTML, HtmlAttributesDictionary } from '../components/ThemeComponents';
 import { getTimelineHome, Status, setStatusFavourited } from '../api';
 import { FavIcon, ReblogIcon, ShareIcon, MoreIcon } from '../components/Icons';
+import { getSharedElementPreviewImageId } from './StatusDetailScreen';
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Home'>,
@@ -54,7 +56,11 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   );
 }
 
-function StatusItem({ status, navigation, onUpdateStatus }: { status: Status, navigation: StackNavigationProp<StackParamList, 'Home'>, onUpdateStatus: (status: Status) => void }) {
+function StatusItem({ status, navigation, onUpdateStatus }: {
+  status: Status,
+  navigation: StackNavigationProp<StackParamList, 'Home'>,
+  onUpdateStatus: (status: Status) => void },
+) {
   const [aspectRatio, setAspectRatio] = useState(1);
 
   const userDisplayName = status.account.display_name;
@@ -72,7 +78,7 @@ function StatusItem({ status, navigation, onUpdateStatus }: { status: Status, na
     navigation.push('AccountDetail', { account: status.account });
   };
   const onImagePressed = () => {
-    navigation.push('StatusDetail', { status });
+    navigation.push('StatusDetail', { status, aspectRatio, animated: true });
   };
   const onLinkPressed = (
     _event: GestureResponderEvent,
@@ -114,12 +120,14 @@ function StatusItem({ status, navigation, onUpdateStatus }: { status: Status, na
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={onImagePressed}>
-        <Image
-          source={{ uri: imageUrl }}
-          resizeMode="cover"
-          style={{ aspectRatio }}
-          onLoad={onImageLoaded}
-        />
+        <SharedElement id={getSharedElementPreviewImageId(status)}>
+          <Image
+            source={{ uri: imageUrl }}
+            resizeMode="cover"
+            style={{ aspectRatio }}
+            onLoad={onImageLoaded}
+          />
+        </SharedElement>
       </TouchableOpacity>
       <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 5 }}>
         <TouchableOpacity onPress={() => changeStatusFavourited(!status.favourited)}>

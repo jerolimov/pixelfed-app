@@ -6,7 +6,7 @@ export type StackParamList = {
   AccountDetail: { account: Account },
   AccountFollowersList: { account: Account },
   AccountFollowingList: { account: Account },
-  StatusDetail: { status: Status },
+  StatusDetail: { status: Status, aspectRatio: number, animated: boolean },
   StatusFavouritedList: { status: Status },
   StatusRebloggedList: { status: Status },
 }
