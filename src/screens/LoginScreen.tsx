@@ -13,7 +13,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { baseUrl } from '../config';
 import { StackParamList } from '../routes';
-import { Container, Text } from '../components/ThemeComponents';
+import Container from '../components/Container';
+import Text from '../components/Text';
 
 type LoginScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'Login'>,

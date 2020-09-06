@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { ScrollView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { Status, Account, getStatusFavouritedBy } from '../api';
-import { Container, Text } from '../components/ThemeComponents';
+import Container from '../components/Container';
 import { StackParamList } from '../routes';
+import AccountListItem from '../components/AccountListItem';
 
 type StatusFavouritedListScreenProps = {
   navigation: StackNavigationProp<StackParamList, 'StatusFavouritedList'>,
@@ -27,26 +24,15 @@ export default function StatusFavouritedListScreen({ navigation, route }: Status
     <ScrollView>
       <Container>
         {
-          accounts?.map((account) => <AccountItem key={account.id} account={account} navigation={navigation} />)
+          accounts?.map((account) => (
+            <AccountListItem
+              key={account.id}
+              account={account}
+              navigation={navigation}
+            />
+          ))
         }
       </Container>
     </ScrollView>
   );
-}
-
-function AccountItem({ account, navigation }: { account: Account, navigation: StackNavigationProp<StackParamList, 'StatusFavouritedList'>, }) {
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.push('AccountDetail', { account })}
-      style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}
-    >
-      <Image
-        source={{ uri: account.avatar_static }}
-        style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
-      />
-      <Text style={{ flex: 1 }}>
-        {account.display_name}
-      </Text>
-    </TouchableOpacity>
-  )
 }
