@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -18,15 +18,16 @@ interface TimelineStatusItemProps {
 }
 
 export default function TimelineStatusItem({ status, navigation, onUpdateStatus: updateStatus }: TimelineStatusItemProps) {
+  const [aspectRatio, setAspectRatio] = useState(1);
   const onImagePressed = () => {
-    navigation.push('StatusDetail', { status, aspectRatio: 1, animated: true });
+    navigation.push('StatusDetail', { status, aspectRatio });
   };
 
   return (
     <View style={{ paddingVertical: 5 }}>
       <StatusAccountBar status={status} navigation={navigation} />
       <TouchableOpacity onPress={onImagePressed}>
-        <StatusImage status={status} initialAspectRatio={1} />
+        <StatusImage status={status} aspectRatio={aspectRatio} onAspectRatio={setAspectRatio} />
       </TouchableOpacity>
       <StatusImageButtonBar status={status} onUpdateStatus={updateStatus} navigation={navigation} />
       <StatusContent status={status} />

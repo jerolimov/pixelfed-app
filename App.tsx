@@ -29,24 +29,24 @@ const handle = (
   // console.log('- route:', { name: route.name, key: route.key, paramKeys: Object.keys(route.params) });
   // console.log('- otherRoute:', { name: otherRoute.name, key: otherRoute.key, paramKeys: Object.keys(otherRoute.params) });
 
-  // Home => StatusDetail
-  // handle screenName=StatusDetail route=StatusDetail otherRoute=Home showing=true
-  // handle screenName=Home route=Home otherRoute=StatusDetail showing=false
+  // TimelineHome => StatusDetail
+  // handle screenName=StatusDetail route=StatusDetail otherRoute=TimelineHome showing=true
+  // handle screenName=TimelineHome route=TimelineHome otherRoute=StatusDetail showing=false
   if (
-    (screenName === 'StatusDetail' && route.name === 'StatusDetail' && otherRoute.name === 'Home' && showing) ||
-    (screenName === 'Home' && route.name === 'Home' && otherRoute.name === 'StatusDetail' && !showing)
+    (screenName === 'StatusDetail' && route.name === 'StatusDetail' && otherRoute.name === 'TimelineHome' && showing) ||
+    (screenName === 'TimelineHome' && route.name === 'TimelineHome' && otherRoute.name === 'StatusDetail' && !showing)
   ) {
     console.log('Case 1');
     const status = showing ? route.params.status : otherRoute.params.status;
     result = [getSharedElementPreviewImageConfig(status)];
   } else
 
-  // Home <= StatusDetail
-  // handle screenName=Home route=Home otherRoute=StatusDetail showing=true
-  // handle screenName=StatusDetail route=StatusDetail otherRoute=Home showing=false
+  // TimelineHome <= StatusDetail
+  // handle screenName=TimelineHome route=TimelineHome otherRoute=StatusDetail showing=true
+  // handle screenName=StatusDetail route=StatusDetail otherRoute=TimelineHome showing=false
   if (
-    (screenName === 'Home' && route.name === 'Home' && otherRoute.name === 'StatusDetail' && showing) ||
-    (screenName === 'StatusDetail' && route.name === 'StatusDetail' && otherRoute.name === 'Home' && !showing)
+    (screenName === 'TimelineHome' && route.name === 'TimelineHome' && otherRoute.name === 'StatusDetail' && showing) ||
+    (screenName === 'StatusDetail' && route.name === 'StatusDetail' && otherRoute.name === 'TimelineHome' && !showing)
   ) {
     console.log('Case 2');
     const status = showing ? otherRoute.params.status : route.params.status;
@@ -103,7 +103,7 @@ const HomeTab = () => (
       name="TimelineHome"
       component={TimelineHomeScreen}
       options={{ title: 'Home' }}
-      sharedElements={(route, otherRoute, showing) => handle('Home', route, otherRoute, showing)}
+      sharedElements={(route, otherRoute, showing) => handle('TimelineHome', route, otherRoute, showing)}
     />
     <Stack.Screen
       name="AccountDetail"

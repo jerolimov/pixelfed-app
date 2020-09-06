@@ -24,13 +24,14 @@ export const getSharedElementPreviewImageConfig = (status: Status): SharedElemen
 });
 
 export default function StatusDetailScreen({ navigation, route }: StatusDetailScreenProps) {
+  const [aspectRatio, setAspectRatio] = useState(route.params.aspectRatio || 1);
   const [status, setStatus] = useState<Status>(route.params.status);
 
   return (
     <ScrollView>
       <Container>
         <StatusAccountBar status={status} navigation={navigation} />
-        <StatusImage status={status} initialAspectRatio={route.params.aspectRatio} />
+        <StatusImage status={status} aspectRatio={aspectRatio} onAspectRatio={setAspectRatio} />
         <StatusImageButtonBar status={status} onUpdateStatus={setStatus} navigation={navigation} />
         <StatusContent status={status} />
         <StatusCreatedAgoText status={status} />

@@ -7,18 +7,17 @@ import { getSharedElementPreviewImageId } from '../screens/StatusDetailScreen';
 
 interface StatusImageProps {
   status: Status;
-  initialAspectRatio: number;
+  aspectRatio: number;
+  onAspectRatio: (aspectRatio: number) => void;
 }
 
-export default function StatusImage({ status, initialAspectRatio }: StatusImageProps) {
-  const [aspectRatio, setAspectRatio] = useState(initialAspectRatio || 1);
-
+export default function StatusImage({ status, aspectRatio, onAspectRatio }: StatusImageProps) {
   const imageUrl = status.media_attachments?.[0]?.preview_url;
 
   const onImageLoaded = (event: NativeSyntheticEvent<ImageLoadEventData>) => {
     // console.log('Image loaded:', event.nativeEvent.source);
     const { width, height } = event.nativeEvent.source;
-    setAspectRatio(width / height);
+    onAspectRatio(width / height);
   };
 
   return (

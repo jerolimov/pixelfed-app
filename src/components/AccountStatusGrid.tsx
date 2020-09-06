@@ -66,7 +66,7 @@ function QuadraticStatusItem({ size, status, navigation }: QuadraticStatusItemPr
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.push('StatusDetail', { status, aspectRatio, animated: true })}
+      onPress={() => navigation.push('StatusDetail', { status, aspectRatio })}
       style={{ width: size }}
     >
       <SharedElement id={getSharedElementPreviewImageId(status)}>
