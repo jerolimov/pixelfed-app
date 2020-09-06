@@ -26,7 +26,7 @@ export default function TimelineStatusItem({ status, navigation, onUpdateStatus:
   return (
     <View style={{ paddingVertical: 5 }}>
       <StatusAccountBar status={status} navigation={navigation} />
-      <TouchableOpacity onPress={onImagePressed}>
+      <TouchableOpacity onPress={onImagePressed} style={{ paddingHorizontal: 10 }}>
         <StatusImage status={status} aspectRatio={aspectRatio} onAspectRatio={setAspectRatio} />
       </TouchableOpacity>
       <StatusImageButtonBar status={status} onUpdateStatus={updateStatus} navigation={navigation} />
