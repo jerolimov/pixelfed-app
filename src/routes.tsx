@@ -9,4 +9,7 @@ export type StackParamList = {
   StatusDetail: { status: Status, aspectRatio: number },
   StatusFavouritedList: { status: Status },
   StatusRebloggedList: { status: Status },
+  Search: any;
+  Profil: any;
+  NotificationList: any;
 }

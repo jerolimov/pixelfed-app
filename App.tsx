@@ -1,10 +1,14 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState } from 'react';
 import { useColorScheme, StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { createSharedElementStackNavigator, SharedElementCompatRoute, SharedElementsConfig } from 'react-navigation-shared-element';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'; 
+
+import { StackParamList } from './src/routes';
+import { DarkTheme, LightTheme } from './src/themes';
 
 import TimelineHomeScreen from './src/screens/TimelineHomeScreen';
 import AccountDetailScreen from './src/screens/AccountDetailScreen';
@@ -14,8 +18,9 @@ import StatusDetailScreen, { getSharedElementPreviewImageConfig } from './src/sc
 import StatusFavouritedListScreen from './src/screens/StatusFavouritedListScreen';
 import StatusRebloggedListScreen from './src/screens/StatusRebloggedListScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import { StackParamList } from './src/routes';
-import { DarkTheme, LightTheme } from './src/themes';
+import SearchScreen from './src/screens/SearchScreen';
+import NotificationListScreen from './src/screens/NotificationListScreen';
+import ProfilScreen from './src/screens/ProfilScreen';
 
 const handle = (
   screenName: string,
@@ -125,25 +130,78 @@ const HomeTab = () => (
   </Stack.Navigator>
 );
 
-const Tab = createBottomTabNavigator();
+const SearchTab = () => {
+  const [Stack] = useState(createSharedElementStackNavigator<StackParamList>());
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ title: 'Search' }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const NotificationTab = () => {
+  const [Stack] = useState(createSharedElementStackNavigator<StackParamList>());
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="NotificationList"
+        component={NotificationListScreen}
+        options={{ title: 'Notifications' }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const ProfilTab = () => {
+  const [Stack] = useState(createSharedElementStackNavigator<StackParamList>());
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profil"
+        component={ProfilScreen}
+        options={{ title: 'Profil' }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 function MyTabs() {
+  const [Tab] = useState(createBottomTabNavigator());
+  const theme = useTheme();
+  const activeTintColor = theme.dark ? theme.colors.primary : theme.colors.primary;
+  const inactiveTintColor = theme.dark ? theme.colors.text : theme.colors.text;
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeTab} />
-      <Tab.Screen name="Settings" component={HomeTab} />
+    <Tab.Navigator tabBarOptions={{ activeTintColor, inactiveTintColor, showLabel: false }}>
+      <Tab.Screen name="Home" component={HomeTab} options={{
+        tabBarIcon: (props) => <MaterialIcons name="home" size={32} color={props.color} />,
+      }} />
+      <Tab.Screen name="Search" component={SearchTab} options={{
+        tabBarIcon: (props) => <MaterialIcons name="search" size={32} color={props.color} />,
+      }} />
+      <Tab.Screen name="Notifications" component={NotificationTab} options={{
+        tabBarIcon: (props) => <MaterialIcons name="notifications" size={32} color={props.color} />,
+        tabBarBadge: 1,
+      }} />
+      <Tab.Screen name="Profil" component={ProfilTab} options={{
+        tabBarIcon: (props) => <MaterialCommunityIcons name="account" size={32} color={props.color} />,
+      }} />
     </Tab.Navigator>
   );
 }
 
-const Tab2 = createMaterialBottomTabNavigator();
-
 function MyTabs2() {
+  const [Tab] = useState(createMaterialBottomTabNavigator());
   return (
-    <Tab2.Navigator>
-      <Tab2.Screen name="Home" component={HomeTab} />
-      <Tab2.Screen name="Settings" component={HomeTab} />
-    </Tab2.Navigator>
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeTab} />
+      <Tab.Screen name="Search" component={SearchTab} />
+      <Tab.Screen name="Notifications" component={NotificationTab} />
+      <Tab.Screen name="Profil" component={ProfilTab} />
+    </Tab.Navigator>
   );
 }
 
