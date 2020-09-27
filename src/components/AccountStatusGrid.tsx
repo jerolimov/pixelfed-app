@@ -35,7 +35,7 @@ export default function AccountStatusGrid({ account, navigation }: AccountStatus
   return (
     <View onLayout={updateLayout} style={{ flexDirection: 'row', flexWrap: 'wrap', padding: 5 }}>
       {
-        statuses?.map(status => (
+        statuses?.filter((status) => status.media_attachments?.[0]?.preview_url).map(status => (
           <QuadraticStatusItem
             key={status.id}
             size={imageSize}
