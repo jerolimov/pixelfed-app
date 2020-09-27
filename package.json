@@ -9,6 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "~1.11.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.8.0",
     "@react-navigation/material-bottom-tabs": "^5.2.16",
@@ -16,6 +17,7 @@
     "@react-navigation/stack": "^5.9.0",
     "expo": "~38.0.8",
     "expo-auth-session": "~1.4.0",
+    "expo-secure-store": "~9.0.1",
     "expo-status-bar": "^1.0.2",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
