@@ -1,4 +1,15 @@
+import axios from 'axios';
+
 import { baseUrl, accessToken } from "./config";
+
+const api = axios.create({
+  baseURL: baseUrl,
+  headers: {
+    Authorization: 'Bearer ' + accessToken,
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
 
 export type Visibility = 'public';
 export type Language = string;
@@ -77,127 +88,50 @@ export interface Status {
   media_attachments: MediaAttachment[];
 }
 
-export const getTimelineHome = async (): Promise<Status[]> => {
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/timelines/home?limit=20`, { headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  return response.json();
+export const getTimelineHome = async (params: { page?: number, min_id?: number, max_id?: number, limit?: number }): Promise<Status[]> => {
+  const response = await api.get<Status[]>('/api/v1/timelines/home', { params });
+  return response.data;
 }
 
 export const getAccount = async (account: Account): Promise<Account> => {
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}`, { headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  return response.json();
+  const response = await api.get<Account>(`/api/v1/accounts/${account.id}`);
+  return response.data;
 }
 
 export const getAccountStatuses = async (account: Account): Promise<Status[]> => {
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}/statuses`, { headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  return response.json();
+  const response = await api.get<Status[]>(`/api/v1/accounts/${account.id}/statuses`);
+  return response.data;
 }
 
 export const getAccountFollowers = async (account: Account): Promise<Account[]> => {
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}/followers`, { headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  return response.json();
+  const response = await api.get<Account[]>(`/api/v1/accounts/${account.id}/followers`);
+  return response.data;
 }
 
 export const getAccountFollowing = async (account: Account): Promise<Account[]> => {
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/accounts/${account.id}/following`, { headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  return response.json();
+  const response = await api.get<Account[]>(`/api/v1/accounts/${account.id}/following`);
+  return response.data;
+}
+
+export const getStatus = async (status: Status): Promise<Status> => {
+  const response = await api.get<Status>(`/api/v1/statuses/${status.id}`);
+  return response.data;
 }
 
 export const getStatusFavouritedBy = async (status: Status): Promise<Account[]> => {
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/statuses/${status.id}/favourited_by`, { headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  return response.json();
+  const response = await api.get<Account[]>(`/api/v1/statuses/${status.id}/favourited_by`);
+  return response.data;
 }
 
 export const setStatusFavourited = async (status: Status, favourited: boolean): Promise<Status> => {
-  const method = 'POST';
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/statuses/${status.id}/${favourited ? 'favourite' : 'unfavourite'}`, { method, headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  const result: Status = await response.json();
+  const response = await api.post<Status>(`/api/v1/statuses/${status.id}/${favourited ? 'favourite' : 'unfavourite'}`);
   return {
-    ...result,
+    ...response.data,
     favourited,
   }
 }
 
 export const getStatusRebloggedBy = async (status: Status): Promise<Account[]> => {
-  const headers = {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-  }
-  const response = await fetch(`${baseUrl}/api/v1/statuses/${status.id}/reblogged_by`, { headers });
-  if (response.status === 429) {
-    console.warn('too many requests:', response.headers);
-    throw new Error(`429 Too Many Requests`);
-  } else if (response.status !== 200) {
-    throw new Error(`Unexpected status code ${response.status}`);
-  }
-  return response.json();
+  const response = await api.get<Account[]>(`/api/v1/statuses/${status.id}/reblogged_by`);
+  return response.data;
 }

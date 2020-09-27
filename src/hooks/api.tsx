@@ -1,33 +1,8 @@
-import axios from 'axios';
 import { useInfiniteQuery, useMutation, queryCache, useQuery } from 'react-query';
 
-import { Status } from '../api';
-import { accessToken, baseUrl } from '../config';
+import { getTimelineHome, getStatus, setStatusFavourited, Status } from '../api';
 
 export { Status } from '../api';
-
-const api = axios.create({
-  baseURL: baseUrl,
-  headers: {
-    Authorization: 'Bearer ' + accessToken,
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-});
-
-const getTimelineHome = async (params: { page?: number, min_id?: number, max_id?: number, limit?: number }): Promise<Status[]> => {
-  const response = await api.get<Status[]>('/api/v1/timelines/home', { params });
-  return response.data;
-}
-
-const setStatusFavourited = async (status: Status, favourited: boolean): Promise<Status> => {
-  const response = await api.post<Status>(`/api/v1/statuses/${status.id}/${favourited ? 'favourite' : 'unfavourite'}`);
-  const result: Status = response.data;
-  return {
-    ...result,
-    favourited,
-  }
-}
 
 export function useTimelineHome() {
   return useInfiniteQuery<Status[], Error>(
@@ -51,7 +26,7 @@ export function useTimelineHome() {
 export function useStatus(status: Status) {
   return useQuery<Status, Error>(
     ['status', status.id],
-    async () => (await api.get<Status>(`/api/v1/statuses/${status.id}`)).data,
+    () => getStatus(status),
   );
 }
 
