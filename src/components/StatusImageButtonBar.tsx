@@ -2,23 +2,19 @@ import React from 'react';
 import { Share, TouchableOpacity, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { Status, setStatusFavourited } from '../api';
+import { Status, useSetStatusFavourited } from '../hooks/api';
 import { StackParamList } from '../routes';
 import { FavIcon, ReblogIcon, ShareIcon } from './Icons';
 import Text from './Text';
 
 interface StatusImageButtonBarProps {
   status: Status;
-  onUpdateStatus: (status: Status) => void;
   navigation: StackNavigationProp<StackParamList, any>,
 }
 
-export default function StatusImageButtonBar({ status, onUpdateStatus, navigation }: StatusImageButtonBarProps) {
-  const changeStatusFavourited = (favourited: boolean) => {
-    setStatusFavourited(status, favourited).then(onUpdateStatus, (error) => {
-      console.warn('Changed failed', error);
-    })
-  };
+export default function StatusImageButtonBar({ status, navigation }: StatusImageButtonBarProps) {
+  const [changeStatusFavourited] = useSetStatusFavourited();
+
   const share = () => {
     Share.share({ title: '', url: status.url }).then((result) => {
       console.warn('Share result', result);
@@ -29,7 +25,7 @@ export default function StatusImageButtonBar({ status, onUpdateStatus, navigatio
 
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 5 }}>
-      <TouchableOpacity onPress={() => changeStatusFavourited(!status.favourited)}>
+      <TouchableOpacity onPress={() => changeStatusFavourited({ status, favourited: !status.favourited })}>
         <FavIcon active={status.favourited} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.push('StatusFavouritedList', { status })}>

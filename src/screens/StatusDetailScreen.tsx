@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ScrollView, } from 'react-native';
+import { ScrollView, RefreshControl, } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SharedElementConfig } from 'react-navigation-shared-element';
 
-import { Status } from '../api';
+import { Status, useStatus } from '../hooks/api';
 import { StackParamList } from '../routes';
 import Container from '../components/Container';
 import StatusImage from '../components/StatusImage';
@@ -25,14 +25,15 @@ export const getSharedElementPreviewImageConfig = (status: Status): SharedElemen
 
 export default function StatusDetailScreen({ navigation, route }: StatusDetailScreenProps) {
   const [aspectRatio, setAspectRatio] = useState(route.params.aspectRatio || 1);
-  const [status, setStatus] = useState<Status>(route.params.status);
+  const statusResult = useStatus(route.params.status);
+  const status = statusResult.data || route.params.status;
 
   return (
-    <ScrollView>
+    <ScrollView refreshControl={<RefreshControl refreshing={statusResult.isLoading} onRefresh={statusResult.refetch} />}>
       <Container>
         <StatusAccountBar status={status} navigation={navigation} />
         <StatusImage status={status} aspectRatio={aspectRatio} onAspectRatio={setAspectRatio} />
-        <StatusImageButtonBar status={status} onUpdateStatus={setStatus} navigation={navigation} />
+        <StatusImageButtonBar status={status} navigation={navigation} />
         <StatusContent status={status} />
         <StatusCreatedAgoText status={status} />
       </Container>
